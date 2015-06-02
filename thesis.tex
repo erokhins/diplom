@@ -1,0 +1,191 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\inputencoding{utf8}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\newcommand{\Expect}{\mathbb E}
+\newcommand{\PRob}{\mathbb P}
+\newcommand{\leqs}{\leqslant}
+\newcommand{\geqs}{\geqslant}
+\newcommand{\eps}{\varepsilon}
+
+\newtheorem{theorem}{Теорема}
+\newtheorem{note}{Замечание}
+\newtheorem{define}{Определение}
+\newtheorem{lemma}[theorem]{Лемма}
+
+\newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{#1 #3}
+\theoremstyle{named}
+\newtheorem*{namedtheorem}{Теорема}
+\newtheorem*{namedpropo}{}
+
+\begin{document}
+\section{Основные определения}
+В рамках этой дипломной работы мы будем иметь дело только с двудольными графами доли которых мы условно назовём клиенты и фрагменты.
+Ребро между некоторым клиентом и фрагментом будет означать, что данный клиент скачал данный фрагмент.
+Обозначим количество клиентов за $n$, а количество фрагментов за $N$. 
+Заметим, что максимальное возможное количество рёбер в таком графе $nN$.
+
+Пусть дан произвольный двудольный граф $G$. Определим для него несколько функций:
+\begin{align*}
+&E(G) \text{ --- количество рёбер}\\
+&Q(G) \text{ --- минимальная степень фрагмента}
+\end{align*}
+Нас будет интересовать, как ведёт себя функция $Q(G)$ при различных моделях роста графа $G$.
+
+\begin{define}
+Некоторое свойство графа будем называть монотонным, если оно сохраняется при добавлении рёбер.
+\end{define}
+
+\begin{note}
+Пусть $k$ -- натуральное число. Тогда свойство $Q(G) > k$ является монотонным свойством.
+\end{note}
+
+Также сформулируем некоторые известные теоремы, которыми мы будем пользоваться.
+\begin{namedtheorem}[Чернова] (Для бернуллиевских случайных величин) \label{Cher} 
+
+Пусть у нас есть $X_1, X_2, X_3, \dots X_n$ -- 
+независимые Бернулевские случайные величины(не обязательно одинаково распределенные). Пусть $X = \sum\limits_{i = 1}^n X_i$ и
+$\mu = \Expect X$, также пусть $\delta > 0$. Тогда выполняются следующие неравенства:
+
+\begin{align}
+\PRob[X < (1-\delta)\mu] &< \exp\left(- \frac{\mu \delta^2}{2} \right)
+\\
+\PRob[X > (1+\delta)\mu] &< \exp\left(- \frac{\mu \delta^2}{4} \right) \text{, при } \delta < 2e - 1
+\end{align}
+\end{namedtheorem}
+Доказательство этой теоремы можно найти в статье \cite{chernov}.
+
+
+
+\section{Модель 1. Равномерный выбор рёбер.}
+В этой модели граф будет расти следующим образом: на каждом шагу мы равномерно выбираем произвольное ещё не проведённое ребро 
+и проводим его. Обозначим за $G_m$ граф, который получается на $m$-том шагу. Ясно, что $E(G_m) = m$.
+Выберем некоторое число $q \in (0, 1)$ и зададимся вопросом, насколько велико должно быть $m$, чтобы выполнялось: $Q(G_m) > qn$.
+К сожалению, исследовать граф $G_m$ напрямую не очень удобно, поэтому мы создадим некоторый граф, который будет похож на граф $G_m$.
+
+Создадим граф $H_p$, где $p \in [0, 1]$, который будет построен по следующему правилу: 
+разыгрываем $nN$ бернуллиевских случайных величин $I_{1,1}, I_{1,2}, \dots I_{n,N}$ с показателем $p$ и проводим ребро от $k$-го клиента к $K$ фрагменту, 
+если $I_{k, K} = 1$.
+Заметим, что случайный граф $G_m$ устроен следующим образом: все графы, в которых ровно $m$ рёбер, выпадают с одинаковой вероятностью.
+А если взять граф $H_p$ при условии того, что $E(H_p) = m$, то тогда он устроен так же, как и $G_m$.
+Это позволит нам доказать следующую лемму:
+
+\begin{lemma}
+Пусть $A$ - множество всех графов, который обладают некоторым монотонным свойством, а $\delta \in (0,1)$.
+Тогда, если $\PRob( H_p \in A) > 1 - \eps$, то
+\begin{equation} \label{l1_1}
+\PRob(G_{\lceil pnN(1+\delta) \rceil} \in A) > 1 - \frac{\eps}{1 - \exp\left(-\frac{\delta^2}{4}pnN\right)};
+\end{equation}
+a если $\PRob( H_p \in A) < \sigma$, то
+\begin{equation}\label{l1_2}
+\PRob(G_{\lfloor pnN(1-\delta) \rfloor} \in A) < \frac{\sigma}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)};
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Будем доказывать неравенство (\ref{l1_1}). Заметим, что 
+\begin{equation}
+E(H_p) = \sum_{k=1}^n \sum_{K=1}^N I_{k, K},
+\end{equation}
+где $I_{k,K}$ -- бернуллиевские случайные величины с показателем $p$.
+Применим к $E(H_p)$ теорему Чернова, где $\mu = \Expect(E(H_p) = pnN$, а $\delta$ взята из условия леммы.
+Получим следующее неравенство:
+\begin{equation}\label{l1_3}
+\PRob\big( E(H_p) \leqs pnN(1+\delta) \big) > 1 - \exp\left(-\frac{\delta^2}{4}pnN\right).
+\end{equation}
+Заметим, что $m = \lceil pnN(1+\delta) \rceil > pnN(1+\delta)$, а значит
+\begin{equation}\label{l1_4}
+\PRob\big( E(H_p) \leqs m \big) \geqs \PRob\big( E(H_p) \leqs pnN(1+\delta) \big)
+\end{equation}
+Положим $B = \PRob\Big( H_p \in A \big| E(H_p) \leqs m \Big)$. Заметим, что
+\begin{equation}\label{l1_big}
+\begin{aligned}
+B = \frac{
+		\PRob\Big( H_p \in A \bigcap E(H_p) \leqs m \Big)
+	}{
+		\PRob\big(E(H_p) \leqs m \big)
+	} 
+&> 
+	\frac{
+		\PRob\big(E(H_p) \leqs m \big) 
+			-
+		\PRob\big(H_p \not\in A \big)
+	}{
+		\PRob\big(E(H_p) \leqs m\big)
+	}
+=
+\\
+	1 
+		-
+	\frac{
+		\PRob\big(H_p \not\in A \big)
+	}{
+		\PRob\big(E(H_p) \leqs m\big)
+	}
+&>
+	1
+		-
+	\frac{\eps}{
+		1 - \exp\left(-\frac{\delta^2}{4}pnN\right)
+	},
+\end{aligned}\end{equation}
+где в последнем переходе мы воспользовались неравенствами (\ref{l1_3}), (\ref{l1_4}) 
+и неравенством $\PRob\big(H_p \not\in A \big) < \eps$, которое очевидно из условия леммы.
+Теперь докажем, что $\PRob(G_{\lceil pnN(1+\delta) \rceil} \in A) \geqs B$.
+
+Рассмотрим граф $H_p$ при условии того, что $E(H_p) \leqs m$ и обозначим его $H_p^m$. 
+Заметим, что этот граф удовлетворяет свойству $A$ с вероятностью $B$, а $E(H_p^m) \leqs m$.
+Теперь мы несколько раз добавим ребер в этот граф, пока в нем не станет ровно $m$ ребер, 
+при этом на каждом шагу ребра будем выбирать равномерно.
+\\
+Заметим, что мы получим случайный граф, в котором ровно $m$ ребер. Несложно понять, 
+что этот граф по распределению совпадает с $G_m$, т.к. мы нигде не различали рёбра между собой, а значит они перестановочны.
+При этом мы знаем, что граф $H_p^m$, с которого мы начинали, обладал свойством $A$ с вероятностью $B$, 
+а значит $\PRob(G_m \in A) \geqs B$. Применяя неравенство (\ref{l1_big}) получаем (\ref{l1_1}).
+
+Теперь докажем (\ref{l1_2}). Пусть $l = \lfloor pnN(1-\delta) \rfloor$. Аналогично неравенствам (\ref{l1_3}) и (\ref{l1_4}) получаем
+\begin{equation} \label{l1_5}
+\PRob\big( E(H_p) \geqs l \big) > 1 - \exp\left(-\frac{\delta^2}{2}pnN\right).
+\end{equation}
+После этого получаем аналог неравенства (\ref{l1_big})
+\begin{equation}\label{l1_big2}
+\begin{aligned}
+	\PRob\Big( H_p \not\in A \big| E(H_p) \geqs l \Big)
+=
+	\frac{
+		\PRob\Big( H_p \not\in A \bigcap E(H_p) \geqs l \Big)
+	}{
+		\PRob\big(E(H_p) \geqs l \big)
+	} 
+>
+\\
+> 
+	\frac{
+		\PRob\big(E(H_p) \geqs l \big) 
+			-
+		\PRob\big(H_p \in A \big)
+	}{
+		\PRob\big(E(H_p) \geqs l\big)
+	}
+>
+	1
+		-
+	\frac{\sigma}{
+		1 - \exp\left(-\frac{\delta^2}{2}pnN\right)
+	},
+\end{aligned}\end{equation}
+После этого остаётся доказать, что $\PRob(G_l \not\in A) \geqs \PRob\Big( H_p \not\in A \big| E(H_p) \geqs l \Big)$.
+Это делается аналогично предыдущему случаю, только на сей раз мы не добавляем рёбра, а равномерно выкидываем.
+\end{proof}
+
+
+
+
+
+
+
+\end{document}
