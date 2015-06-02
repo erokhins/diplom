@@ -182,6 +182,39 @@ B = \frac{
 Это делается аналогично предыдущему случаю, только на сей раз мы не добавляем рёбра, а равномерно выкидываем.
 \end{proof}
 
+\bigskip
+
+Только что доказанная лемма позволяет нам оценивать $\PRob\big(Q(G_m) \geqs qn\big)$ через $\PRob\big(Q(H_p) \geqs q n\big)$.
+Ясно, что рассматривать $q \geqs p$ не очень интересно, т.к. ребер в графе $H_p$ в среднем $pnN$, 
+а значит, самое лучшее, на что мы можем рассчитывать, что каждый фрагмент скачан $pn$ клиентами.
+
+Итак, $q < p$. Рассмотрим вероятность того, что первый фрагмент скачали хотя бы $qn$ клиентов, 
+т.е. $\PRob\left(\sum\limits_{i=1}^n I_{i,1} \geqs qn\right)$. Пусть $\delta = 1 - \frac{q}{p}$, тогда:
+\begin{align*}
+\PRob\left(\sum_{i=1}^n I_{i,1} \geqs qn\right) = \PRob\left(\sum_{i=1}^n I_{i,1} \geqs (1 - \delta) pn\right) 
+= 1 - \PRob\left(\sum_{i=1}^n I_{i,1} < (1 - \delta) pn\right),
+\end{align*}
+применяя теорему Чернова получаем:
+\begin{align}
+&\PRob\left(\sum_{i=1}^n I_{i,1} < (1 - \delta) pn\right) < \exp\left(- \frac{pn \delta^2}{2} \right)
+\\
+&\PRob\left(\sum_{i=1}^n I_{i,1} \geqs qn\right) > 1 - \exp\left(- \frac{pn \delta^2}{2} \right)
+\end{align}
+
+Теперь посмотрим, что мы знаем, про вероятность того, что все фрагменты скачены хотя бы $qn$ клиентами.
+Заметим, что $I_{i,j}$ независимы, а значит и то, что происходит с первым фрагментом не зависит от того, 
+что происходит с остальными фрагментами. Пользуясь этим получим:
+\begin{equation}\begin{aligned}
+&\PRob\big(Q(H_p) \geqs q n\big) = \left( \PRob\left(\sum_{i=1}^n I_{i,1} \leqs qn\right)  \right)^N >
+\\
+&\left( 1 - \exp\left(- \frac{pn \delta^2}{2} \right) \right)^N > 1 - N \cdot \exp\left(- \frac{pn \delta^2}{2} \right) 
+\end{aligned}\end{equation}
+где $\delta = 1 - \frac{q}{p}$.
+Перепишем полученное в другом виде:
+\begin{align}
+&\PRob\big(Q(H_p) \geqs (1-\delta_1)p n\big) > 
+	1 - N \cdot \exp\left(- \frac{pn \delta_1^2}{2} \right) \text{, где } \delta_1 \in (0,1).
+\end{align}
 
 
 
