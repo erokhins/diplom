@@ -15,7 +15,7 @@
 \newtheorem{theorem}{Теорема}
 \newtheorem{note}{Замечание}
 \newtheorem{define}{Определение}
-\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{lemma}{Лемма}
 
 \newtheoremstyle{named}{}{}{\itshape}{}{\bfseries}{.}{.5em}{#1 #3}
 \theoremstyle{named}
@@ -74,7 +74,7 @@ $\mu = \Expect X$, также пусть $\delta > 0$. Тогда выполня
 А если взять граф $H_p$ при условии того, что $E(H_p) = m$, то тогда он устроен так же, как и $G_m$.
 Это позволит нам доказать следующую лемму:
 
-\begin{lemma}
+\begin{lemma} \label{l1}
 Пусть $A$ - множество всех графов, который обладают некоторым монотонным свойством, а $\delta \in (0,1)$.
 Тогда, если $\PRob( H_p \in A) > 1 - \eps$, то
 \begin{equation} \label{l1_1}
@@ -204,19 +204,56 @@ B = \frac{
 Теперь посмотрим, что мы знаем, про вероятность того, что все фрагменты скачены хотя бы $qn$ клиентами.
 Заметим, что $I_{i,j}$ независимы, а значит и то, что происходит с первым фрагментом не зависит от того, 
 что происходит с остальными фрагментами. Пользуясь этим получим:
-\begin{equation}\begin{aligned}
+\begin{equation}\label{mod1_pr}\begin{aligned}
 &\PRob\big(Q(H_p) \geqs q n\big) = \left( \PRob\left(\sum_{i=1}^n I_{i,1} \leqs qn\right)  \right)^N >
 \\
 &\left( 1 - \exp\left(- \frac{pn \delta^2}{2} \right) \right)^N > 1 - N \cdot \exp\left(- \frac{pn \delta^2}{2} \right) 
 \end{aligned}\end{equation}
-где $\delta = 1 - \frac{q}{p}$.
-Перепишем полученное в другом виде:
-\begin{align}
-&\PRob\big(Q(H_p) \geqs (1-\delta_1)p n\big) > 
-	1 - N \cdot \exp\left(- \frac{pn \delta_1^2}{2} \right) \text{, где } \delta_1 \in (0,1).
-\end{align}
+где $\delta = 1 - \frac{q}{p}$. Всё вышесказанное позволит нам доказать следующую теорему:
 
+%Перепишем полученное в другом виде:
+%\begin{align}
+%&\PRob\big(Q(H_p) \geqs (1-\delta_1)p n\big) > 
+	%1 - N \cdot \exp\left(- \frac{pn \delta_1^2}{2} \right) \text{, где } \delta_1 \in (0,1).
+%\end{align}
 
+\begin{theorem}
+Выберем $q$ и $\sigma$ такие, что $q, \sigma \in (0,1)$. Тогда 
+\begin{equation}
+\PRob\big(Q(G_{\min(nN, pnN + 2\sqrt{pnN})}) \geqs qn\big) > 1 - \sigma
+\end{equation}
+где $p = q + c + \sqrt{c^2+2qc}, c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
+\end{theorem}
+\begin{proof}
+Для начала заметим, что если получится, что $pnN + 2\sqrt{pnN} \geqs nN$ то утверждение очевидно, 
+поэтому далее мы будем считать, что $pnN + 2\sqrt{pnN} < nN$.
+
+Сначала мы докажем, что 
+\begin{equation}\label{t1_1}
+\PRob\big(Q(H_p) \geqs qn \big) > 1 - \frac\sigma{2}.
+\end{equation}
+Из неравенства (\ref{mod1_pr}) мы знаем, что 
+\begin{equation}
+\PRob\big(Q(H_p) \geqs qn \big) > 1 - N \cdot \exp\left(- \frac{n (p-q)^2}{2p} \right)
+\end{equation}
+Заметим, что $(p-q)^2 = 2c^2 + 2qc + 2c\sqrt{c^2 + 2qc} = 2pc$, а значит:
+\begin{equation}
+1 - N \cdot \exp\left(- \frac{n (p-q)^2}{2p} \right) = 1 - N \cdot \exp(-nc) = 1 - \frac\sigma{2}
+\end{equation}
+Тем самым мы доказали неравенство (\ref{t1_1}).
+Осталось воспользоваться леммой \ref{l1}, а если точнее, то неравенством (\ref{l1_1}), взяв $\delta = \frac{2}{\sqrt{pnN}}$
+ и $\eps = \frac\sigma{2}$, а множество $A$ -- все графы, для которых $Q(G) \geqs qn$.
+Заметим, что $pnN > 2cnN> 2N\ln(2N) > 4$, а значит $\delta \in (0,1)$. Осталось заметить, что 
+\begin{equation}
+1 - \exp\left(-\frac{\delta^2}{4}pnN\right) = 1 - \frac{1}{e} > \frac{1}{2},
+\end{equation}
+что и завершает доказательство.
+\end{proof}
+
+\bigskip
+
+Только что доказанная теорема позволяет находить необходимое количество проведённых ребер, чтобы выполнялось $Q(G_m) > qn$.
+Попробуем привести оценку в другую сторону -- т.е. понять, какого количества точно не хватит.
 
 
 
