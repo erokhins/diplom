@@ -48,7 +48,7 @@
 \begin{namedtheorem}[Чернова] (Для бернуллиевских случайных величин) \label{Cher} 
 
 Пусть у нас есть $X_1, X_2, X_3, \dots X_n$ -- 
-независимые Бернулевские случайные величины(не обязательно одинаково распределенные). Пусть $X = \sum\limits_{i = 1}^n X_i$ и
+независимые бернуллиевские случайные величины(не обязательно одинаково распределенные). Пусть $X = \sum\limits_{i = 1}^n X_i$ и
 $\mu = \Expect X$, также пусть $\delta > 0$. Тогда выполняются следующие неравенства:
 
 \begin{align}
@@ -74,15 +74,16 @@ $\mu = \Expect X$, также пусть $\delta > 0$. Тогда выполня
 А если взять граф $H_p$ при условии того, что $E(H_p) = m$, то тогда он устроен так же, как и $G_m$.
 Это позволит нам доказать следующую лемму:
 
+%лемма 1
 \begin{lemma} \label{l1}
 Пусть $A$ - множество всех графов, который обладают некоторым монотонным свойством, а $\delta \in (0,1)$.
-Тогда, если $\PRob( H_p \in A) > 1 - \eps$, то
+Тогда, если $\PRob( H_p \in A) \geqs 1 - \eps$, то
 \begin{equation} \label{l1_1}
 \PRob(G_{\lceil pnN(1+\delta) \rceil} \in A) > 1 - \frac{\eps}{1 - \exp\left(-\frac{\delta^2}{4}pnN\right)};
 \end{equation}
-a если $\PRob( H_p \in A) < \sigma$, то
+a если $\PRob( H_p \in A) \leqs \eps$, то
 \begin{equation}\label{l1_2}
-\PRob(G_{\lfloor pnN(1-\delta) \rfloor} \in A) < \frac{\sigma}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)};
+\PRob(G_{\lfloor pnN(1-\delta) \rfloor} \in A) < \frac{\eps}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)};
 \end{equation}
 \end{lemma}
 
@@ -109,7 +110,7 @@ B = \frac{
 	}{
 		\PRob\big(E(H_p) \leqs m \big)
 	} 
-&> 
+&\geqs 
 	\frac{
 		\PRob\big(E(H_p) \leqs m \big) 
 			-
@@ -119,6 +120,7 @@ B = \frac{
 	}
 =
 \\
+=
 	1 
 		-
 	\frac{
@@ -161,9 +163,9 @@ B = \frac{
 	}{
 		\PRob\big(E(H_p) \geqs l \big)
 	} 
->
+\geqs
 \\
-> 
+\geqs
 	\frac{
 		\PRob\big(E(H_p) \geqs l \big) 
 			-
@@ -174,7 +176,7 @@ B = \frac{
 >
 	1
 		-
-	\frac{\sigma}{
+	\frac{\eps}{
 		1 - \exp\left(-\frac{\delta^2}{2}pnN\right)
 	},
 \end{aligned}\end{equation}
@@ -211,16 +213,11 @@ B = \frac{
 \end{aligned}\end{equation}
 где $\delta = 1 - \frac{q}{p}$. Всё вышесказанное позволит нам доказать следующую теорему:
 
-%Перепишем полученное в другом виде:
-%\begin{align}
-%&\PRob\big(Q(H_p) \geqs (1-\delta_1)p n\big) > 
-	%1 - N \cdot \exp\left(- \frac{pn \delta_1^2}{2} \right) \text{, где } \delta_1 \in (0,1).
-%\end{align}
-
-\begin{theorem}
-Выберем $q$ и $\sigma$ такие, что $q, \sigma \in (0,1)$. Тогда 
+%теорема 1
+\begin{theorem}\label{t1}
+Для любых $q$ и $\sigma$ таких, что $q, \sigma \in (0,1)$ верно
 \begin{equation}
-\PRob\big(Q(G_{\min(nN, pnN + 2\sqrt{pnN})}) \geqs qn\big) > 1 - \sigma
+\PRob\big(Q(G_{\min(nN, \lceil pnN + 2\sqrt{pnN} \rceil)}) \geqs qn\big) > 1 - \sigma
 \end{equation}
 где $p = q + c + \sqrt{c^2+2qc}, c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
 \end{theorem}
@@ -255,7 +252,58 @@ B = \frac{
 Только что доказанная теорема позволяет находить необходимое количество проведённых ребер, чтобы выполнялось $Q(G_m) > qn$.
 Попробуем привести оценку в другую сторону -- т.е. понять, какого количества точно не хватит.
 
+Вернёмся к графу $H_p$, где $p \in [0,1]$ и вспомним, что ребро от $k$-го клиента к $K$-му фрагменту проводится тогда и только тогда
+когда $I_{k,K} = 1$, где $I_{k,K}$ -- независимые бернуллиевские случайные величины с показателем $p$. 
+Посчитаем вероятность того, что первый фрагмент скачали как минимум $qn$ клиентов:
+\begin{equation}
+\PRob\left(\sum_{i=1}^n I_{i,1} > qn\right) 
+	= 
+1 - \PRob\left(\sum_{i=1}^n I_{i,1} \leqs \lfloor qn \rfloor\right) 
+	= 
+1 - \PRob\big(Bin(n, p) \leqs l\big),
+\end{equation}
+где $l = \lfloor qn \rfloor$. Заметим, что для биномиального распределения мы знаем функцию распределения, 
+а именно $\PRob\big(Bin(n, p) \leqs l\big) = I_{1-p}(n-l, l+1)$, где $I_x(a,b)$ -- регуляризованная неполная бета-функция:
+\begin{equation}
+I_x(a,b) = \frac{B_x(a,b)}{B(a,b)},
+\end{equation}
+для которой верно, что $I_x(a,b) = 1 - I_{1-x}(b, a)$.
 
+Вспомнив, что $I_{k,K}$ -- независимые, посчитаем
+\begin{equation}\label{n21}
+\PRob(Q(H_p) > qn) = \big(1 - I_{1-p}(n-l, l+1)\big)^N = \big(I_{p}(l+1, n-l)\big)^n
+\end{equation}
+Теперь всё готово, для того, чтобы доказать аналог теоремы \ref{t1}.
 
+% теорема 2
+\begin{theorem}\label{t2}
+Для любых $q$ и $\sigma$ таких, что $q, \sigma \in (0,1)$ верно
+\begin{equation}
+\PRob\big(Q(G_{\max(0, \lfloor pnN - \sqrt{2pnN} \rfloor)}) > qn\big) < \sigma
+\end{equation}
+где $p = \max\big(p :  I_p(l+1, n-l) \leqs \sqrt[n]{2\sigma} \big)$.
+\end{theorem}
+
+\begin{proof}
+Аналогично предыдущей теореме, предполагаем, что $pnN - \sqrt{2pnN} > 0$.
+Заметим, что $I_x(a,b)$ -- монотонная по $x$ функция, а значит $I_p(l+1, n-l)^n \leqs 2\sigma$. 
+Из неравенства (\ref{n21}) получаем, что
+\begin{equation}
+\PRob(Q(H_p) > qn) \leqs 2\sigma.
+\end{equation}
+
+Теперь воспользуемся леммой \ref{l1}, на сей раз неравенством (\ref{l1_2}).
+Возьмём в качестве $A$ множество всех графов, для которых $Q(G) > qn$.
+Также возьмём $\eps = 2\sigma$, $\delta = \sqrt{\frac{2}{pnN}}$.
+Предположение $pnN - \sqrt{2pnN} > 0$ означает, что $\delta < 1$.
+Заметим, что $1 - \exp\left(-\frac{\delta^2}{2}pnN\right) = 1 - \frac{1}{e} > \frac{1}{2}$, откуда получим, что
+\begin{equation}
+\PRob\big(G_{\lfloor pnN - \sqrt{2pnN} \rfloor} \in A\big) 
+	< 
+\frac{2\sigma}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)}
+	<
+\sigma
+\end{equation}
+\end{proof}
 
 \end{document}
