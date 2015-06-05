@@ -26,7 +26,7 @@
 \section{Основные определения}
 В рамках этой дипломной работы мы будем иметь дело только с двудольными графами доли которых мы условно назовём клиенты и фрагменты.
 Ребро между некоторым клиентом и фрагментом будет означать, что данный клиент скачал данный фрагмент.
-Обозначим количество клиентов за $n$, а количество фрагментов за $N$. 
+Обозначим количество клиентов за $n$, а количество фрагментов за $N$. В рамках данной работы, будем предполагать, что $n, N \geqs 100$.
 Заметим, что максимальное возможное количество рёбер в таком графе $nN$.
 
 Пусть дан произвольный двудольный граф $G$. Определим для него несколько функций:
@@ -281,26 +281,26 @@ I_x(a,b) = \frac{B_x(a,b)}{B(a,b)},
 \begin{equation}
 \PRob\big(Q(G_{\max(0, \lfloor pnN - \sqrt{2pnN} \rfloor)}) > qn\big) < \sigma
 \end{equation}
-где $p = \max\big(p :  I_p(l+1, n-l) \leqs \sqrt[n]{2\sigma} \big)$.
+где $p = \max\big(p :  I_p(l+1, n-l) \leqs \sqrt[n]{\frac\sigma{2}} \big)$.
 \end{theorem}
 
 \begin{proof}
 Аналогично предыдущей теореме, предполагаем, что $pnN - \sqrt{2pnN} > 0$.
-Заметим, что $I_x(a,b)$ -- монотонная по $x$ функция, а значит $I_p(l+1, n-l)^n \leqs 2\sigma$. 
+Заметим, что $I_x(a,b)$ -- монотонная по $x$ функция, а значит $I_p(l+1, n-l)^n \leqs \frac\sigma{2}$. 
 Из неравенства (\ref{n21}) получаем, что
 \begin{equation}
-\PRob(Q(H_p) > qn) \leqs 2\sigma.
+\PRob(Q(H_p) > qn) \leqs \frac\sigma{2}.
 \end{equation}
 
 Теперь воспользуемся леммой \ref{l1}, на сей раз неравенством (\ref{l1_2}).
 Возьмём в качестве $A$ множество всех графов, для которых $Q(G) > qn$.
-Также возьмём $\eps = 2\sigma$, $\delta = \sqrt{\frac{2}{pnN}}$.
+Также возьмём $\eps = \frac\sigma{2}$, $\delta = \sqrt{\frac{2}{pnN}}$.
 Предположение $pnN - \sqrt{2pnN} > 0$ означает, что $\delta < 1$.
 Заметим, что $1 - \exp\left(-\frac{\delta^2}{2}pnN\right) = 1 - \frac{1}{e} > \frac{1}{2}$, откуда получим, что
 \begin{equation}
 \PRob\big(G_{\lfloor pnN - \sqrt{2pnN} \rfloor} \in A\big) 
 	< 
-\frac{2\sigma}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)}
+\frac{\frac\sigma{2}}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)}
 	<
 \sigma
 \end{equation}
