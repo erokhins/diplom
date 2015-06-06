@@ -230,7 +230,7 @@ B = \frac{
 \begin{equation}
 \PRob\big(Q(G_{\min(nN, \lceil pnN + 2\sqrt{pnN} \rceil)}) \geqs qn\big) > 1 - \sigma
 \end{equation}
-где $p = q + c + \sqrt{c^2+2qc}, c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
+где $p \geqs q + c + \sqrt{c^2+2qc}, c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
 \end{theorem}
 \begin{proof}
 Для начала заметим, что если получится, что $pnN + 2\sqrt{pnN} \geqs nN$ то утверждение очевидно, 
@@ -244,7 +244,7 @@ B = \frac{
 \begin{equation} \label{t1_t3_1}
 \PRob\big(Q(H_p) \geqs qn \big) > 1 - N \cdot \exp\left(- \frac{n (p-q)^2}{2p} \right)
 \end{equation}
-Заметим, что $(p-q)^2 = 2c^2 + 2qc + 2c\sqrt{c^2 + 2qc} = 2pc$, а значит:
+Заметим, что $(p-q)^2 - 2pc = p^2 -2(q + c)p + q^2 \geqs 0$, а значит:
 \begin{equation}
 1 - N \cdot \exp\left(- \frac{n (p-q)^2}{2p} \right) = 1 - N \cdot \exp(-nc) = 1 - \frac\sigma{2}
 \end{equation}
@@ -370,7 +370,7 @@ $Multinom(m, p_i=\frac{1}{n}) = (Z_1, Z_2, \dots, Z_n)$. Значит, расп�
 Иногда аргументы мы будем опускать и писать просто $s$.
 Заметим, что $\PRob(\exists k : J_k \geqs N) \leqs N \cdot s(p, N)$. 
 Теперь воспользуемся неравенством (\ref{gr_1}) и получим следующие неравенства:
-\begin{align}
+\begin{align}\label{ot_1}
 &s(p,N) = \PRob(X \geqs N) \leqs \frac{e^{-pN}(e\cdot pN)^N}{N^N} = (e^{1-p} p )^N 
 \\ \label{s_1}
 &\PRob(\exists k : J_k \geqs N) \leqs N \cdot s(p, N) = N \cdot (e^{1-p} p )^N.
@@ -565,12 +565,47 @@ a если $\PRob( H_p \in A) \leqs \eps$, то
 \begin{equation}
 \PRob\big(Q(G_{\min(nN, \lceil pnN + 2\sqrt{pnN} \rceil)}) \geqs qn\big) > 1 - \sigma
 \end{equation}
-где $p = q + s + c + \sqrt{c^2+2(q+s)c}, c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
+где $p$ такое, что 
+\begin{equation}\label{t3_2}
+p \geqs q + s(p, N) + c + \sqrt{c^2+2(q+s(p, N))c}
+\end{equation}
+a $c = \frac{\ln(2N) - \ln(\sigma)}{n}$.
 \end{theorem}
 \begin{proof}
 Доказательство дословно переносится с доказательства теоремы \ref{t1}, 
 где в качестве неравенства (\ref{t1_t3_1}) выступает неравенство (\ref{t3_1}). 
 Также, вместо леммы \ref{l1} и неравенства (\ref{l1_1}) выступает лемма \ref{l3} и неравенство (\ref{l3_1}).
 \end{proof}
+
+В только что доказанной теоремы есть небольшой изъян -- на $p$ наложено достаточно сложное условие. 
+Постараемся его немного упростить.
+\begin{cons}
+Пусть $(q+c) < \frac{1}{4}$, тогда условие на $p$ можно заменить на следующее:
+\begin{equation}
+p = 2\left(q + c + \exp\left(-\frac{N}{18}\right) \right)
+\end{equation}
+
+\begin{proof}
+Покажем, что для такого $p$ выполняется условие (\ref{t3_2}).
+Заметим, что $p < \frac{1}{2} + \frac{2}{e^5} < \frac{2}{3}$, поскольку $N > 100$.
+Также вспомним неравенство (\ref{ot_1}) и улучшим его:
+\begin{equation}
+s(p, N) \leqs (e^{1-p} p)^N 
+	=
+\exp\big(N( ln(p) + (1-p) )\big)
+	\leqs
+\exp\left( - N \cdot \frac{(1-p)^2}{2}\right),
+\end{equation}
+где мы применили неравенство $ln(p) + (1-p) \leqs - \frac{(1-p)^2}{2}$, которое верно для $p\in(0,1)$.
+Теперь заметим, что, поскольку $p < \frac{2}{3}$, то 
+\begin{equation}
+\exp\left( - N \cdot \frac{(1-p)^2}{2}\right) < \exp\left( - N\cdot \frac{1}{18}\right),
+\end{equation}
+откуда мы получаем, что 
+\begin{equation}
+p > 2(q+c+s(p,N)) \geqs q + s(p, N) + c + \sqrt{c^2+2(q+s(p, N))c}
+\end{equation}
+\end{proof}
+\end{cons}
 
 \end{document}
