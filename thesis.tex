@@ -1,45 +1,4 @@
-\documentclass[a4paper,14pt]{matmex-diploma-custom} 
-
-\usepackage[utf8]{inputenc}
-\usepackage[english,russian]{babel}
-\usepackage[dvips]{graphicx}
-\usepackage{textcomp}
-\usepackage{cmap} % для кодировки шрифтов в pdf
-\usepackage{amssymb, amsmath, amsthm, amsfonts, amscd, geometry, hyperref}
-\usepackage{indentfirst} % Indent the first paragraph as well
-
-%\newenvironment{Proof} % имя окружения
-%{\par{\bf Доказательство.}} % команды для \begin
-%{\hfill$\scriptstyle\square$} % для команды \end
-
-\pagestyle{plain} % нумерация страниц
-
-\unitlength=1mm % хрень для картинок
-
-\linespread{1.3} % полуторный интервал
-% \renewcommand{\rmdefault}{ftm} % Times New Roman
-\frenchspacing
-
-\emergencystretch=10pt % для обработки плохих строк
-\clubpenalty=10000 % избежание одиночных слов в начале или конце страницы
-\widowpenalty=10000 % для того же
-\binoppenalty=10000 % неразрывность формул
-\relpenalty=10000 % и это туда же
-
-
-\geometry{left=3cm}
-\geometry{right=1.5cm}
-\geometry{top=2cm}
-\geometry{bottom=2cm}
-\oddsidemargin = 20pt
-%\evensidemargin = 28pt%32pt
-\topmargin = 3mm
-\headheight = 0pt
-\headsep = 0pt
-\textheight = 254mm
-\textwidth = 165mm
-%\hoffset=-10mm
-\voffset=-10mm
+\documentclass[14pt]{matmex-diploma-custom} 
 
 
 \newcommand{\Expect}{\mathbb E}
@@ -61,109 +20,51 @@
 
 \begin{document}
 
+\filltitle{ru}{
+    chair              = {Кафедра теории вероятностей и математической статистики},
+    title              = {Рост двудольных графов с реберным приоритетом},
+    % Здесь указывается тип работы. Возможные значения:
+    %   coursework - Курсовая работа
+    %   diploma - Диплом специалиста
+    %   master - Диплом магистра
+    %   bachelor - Диплом бакалавра
+    type               = {diploma},
+    position           = {студента},
+    group              = 512,
+    author             = {Ерохин Станислав Евгеньевич},
+    supervisorPosition = {кандидат физ.-мат. наук, доцент},
+    supervisor         = {Якубович Ю.\,В.},
+    reviewerPosition   = {кандидат физ.-мат. наук, доцент},
+    reviewer           = {Валландер С.\,С.},
+    chairHeadPosition  = {доктор физ.-мат. наук, профессор},
+    chairHead          = {Никитин Я.\,Ю.},
+%   university         = {Санкт-Петербургский Государственный Университет},
+%   faculty            = {Математико-механический факультет},
+%   city               = {Санкт-Петербург},
+%   year               = {2013}
+}
+\filltitle{en}{
+    chair              = {Chair of Probability Theory and Mathematical Statistics},
+    title              = {Bipartite graph growth with edge priority},
+    author             = {Stanislav Erokhin},
+    supervisorPosition = {associate professor},
+    supervisor         = {Yuri Yakubovich},
+    reviewerPosition   = {Associate Arofessor},
+    reviewer           = {Sergej Vallander},
+    chairHeadPosition  = {professor},
+    chairHead          = {Yakov Nikitin},
+}
+\maketitle
 	
+%%%%%%------------------Оглавление	
 \renewcommand{\contentsname}{Оглавление}
+\tableofcontents
+\newpage
 
-\thispagestyle{empty}
-\newgeometry{top=30mm,bottom=5mm,left=20mm,right=15mm,nohead}
-\begin{center}
-	{ Правительство Российской Федерации \par
-Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования \par
-«Санкт-Петербургский государственный университет»\par\vskip0.6em
-		
-	Кафедра теории вероятностей и математической статистики \par
-	\par}
-\end{center}
-
-\vspace{36mm}
-\begin{center}
-	{\large Ерохин Станислав Евгеньевич}
-\end{center}
-
-\vspace{5mm}
-\begin{center}
-	\begin{spacing}{1.8}{\bf \LARGE Рост двудольных графов с реберным приоритетом }\end{spacing}
-	\bf{\large Дипломная работа}
-\end{center}
-
-\vskip0em
-	\begin{flushright}
-		{\small Допущена к защите.
-		
-		Зав. кафедрой:
-		
-		доктор физ.-мат. наук, профессор Никитин Я.\,Ю.
-%		д.\,ф.-м.\,н., профессор Никитин Я.\,Ю.
-		
-		\vspace{12mm}
-		Научный руководитель:
-		
-		кандидат физ.-мат. наук, доцент Якубович Ю.\,В.
-		
-		\vspace{12mm}
-		Рецензент:
-		
-		кандидат физ.-мат. наук, доцент Валландер С.\,С.}
-	\end{flushright}
-	\vspace{25mm}
-	\begin{center}
-		Санкт-Петербург
-		
-		2015
-	\end{center}
-	\newpage
-	\thispagestyle{empty}
-	
-	\begin{center}
-		{ SAINT-PETERSBURG STATE UNIVERSITY\par
-			\vskip0.6em
-			Chair of Probability Theory and Mathematical Statistics\par
-			\par}
-	\end{center}
-	
-	\vspace{36mm}
-	\begin{center}
-		{\large Stanislav Erokhin}
-	\end{center}
-	\vspace{0mm}
-	\begin{center}
-		\begin{spacing}{1.8}{\bf \LARGE Bipartite graph growth with edge priority}\end{spacing}
-		\bf{\large Graduation thesis}
-	\end{center}
-	
-	\vskip0em
-	\begin{flushright}
-		{\small Admitted for defence.
-			
-			Head of the chair:\\
-			Professor  Yakov Nikitin 
-			
-			\vspace{12mm}
-			Scientific supervisor:\\
-			Associate Professor
-			Yuri Yakubovich 
-			
-			\vspace{12mm}
-			Reviewer:
-			
-			Associate Professor Sergej Vallander }
-	\end{flushright}
-	\vspace{20mm}
-	\begin{center}
-		Saint-Petersburg
-		
-		2015
-	\end{center}
-	
-	\newpage
-	
-	\newgeometry{a4paper,top=20mm,bottom=20mm,left=30mm,right=15mm,nohead,includeheadfoot}
-
-	\tableofcontents
-	\newpage
-
+%%%%%%------------------Введение
 \section*{Введение}
-Тут будет введение.
+В 2002 году был создан протокол обмена данными: BitTorrent, который играет важную роль в обмене данными 
+в современном мире. При этом, он остаётся не до 
 
 \section*{Основные определения}
 В рамках этой дипломной работы мы будем иметь дело только с двудольными графами доли которых мы условно назовём клиенты и фрагменты.
@@ -858,7 +759,7 @@ A \leqs \PRob\left(\sum_{k = 1}^N I_k > N - D\right) \leqs \PRob\left(\sum_{k = 
 \section*{Экспериментальные данные}
 
 
-	%========================================================================================
+	%=======================================================================================
 
 \begin{thebibliography}{XXXX}
 	{% Открывающая фигурная скобка небходима
@@ -867,7 +768,9 @@ A \leqs \PRob\left(\sum_{k = 1}^N I_k > N - D\right) \leqs \PRob\left(\sum_{k = 
 			
 			
 	
-		\bibitem[Il]{Ilyn}{ В.П.~Ильин}, {\em Некоторые интегральные неравенства и их применения в теории дифференцируемых функций многих переменных} // Математический сборник, 54 (1961), no. 3, 331--380.
+		\bibitem[Il]{Ilyn}{ В.П.~Ильин}, {\em 
+			Некоторые интегральные неравенства и их применения в теории дифференцируемых функций многих переменных
+			} // Математический сборник, 54 (1961), no. 3, 331--380.
 		
 		\bibitem[Ko]{Kolonitskii}{ С.Б.~Колоницкий}, {\em Множественность решений задачи Дирихле для уравнения с $ p $-лапласианом в трехмерном сферическом слое} // Алгебра и анализ, 22 (2010), no. 3, 206--221.
 			

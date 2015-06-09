@@ -1,8 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{matmex-diploma-custom}[2013/04/12 MatMex LaTeX diploma class]
+\ProvidesClass{matmex-diploma-custom}[2015/05/28 MatMex LaTeX diploma class]
 \def\my@fontsize{12pt}\def\my@baseclass{article}\def\my@title12pt{}\def\my@body14pt{}
-%
-%% Если используется опция 14pt то нужно несколько хаков
+
+% Если используется опция 14pt то нужно несколько хаков
 \DeclareOption{14pt}{
   \def\ignore#1{}
   % во-первых, класс наследуется от extarticle
@@ -47,17 +47,15 @@
 
 \usepackage{fancyhdr}
 \usepackage{ifthen}
-%%% Мы используем компилятор XeLaTex, который дружит с Unicode и True Type/Open Type
-%%% шрифтами. Для русификации достаточно подключить пакет fontspec и
-%%% выбрать Unicode шрифт в котором есть кириллические глифы. Ниже
-%%% основным шрифтом выбирается Unicode версия шрифта Computer Modern с заcечками
-%\usepackage{fontspec}
-%%%\setmainfont[Mapping=tex-text]{CMU Serif}
-%%
-%%%% В XeLaTex заменой известного пакета babel является пакет polyglossia.
-%%%% Теперь у нас будут переносы слов
-%\usepackage{polyglossia}
-%\setdefaultlanguage{russian}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+
+\usepackage[dvips]{graphicx}
+\usepackage{textcomp}
+\usepackage{cmap} % для кодировки шрифтов в pdf
+\usepackage{amssymb, amsmath, amsthm, amsfonts, amscd, geometry}
+
 
 
 %% Отступ в первом абзаце
@@ -124,8 +122,10 @@
     \ifthenelse{\equal{#1}{ru}}
         {
         \presetkeys[#1]{mytitle}{
-          university = {САНКТ-ПЕТЕРБУРГСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСИТЕТ},
-          faculty = {Математико-механический факультет},
+          university = {Правительство Российской Федерации\\ 
+                       Федеральное государственное бюджетное образовательное учреждение высшего профессионального образования \\
+                       <<Санкт-Петербургский государственный университет>>},
+          faculty = {},
           city = {Санкт-Петербург},
           year = {\the\year},
           type = {diploma}
@@ -136,7 +136,7 @@
         {
         \presetkeys[#1]{mytitle}{
           university = {SAINT-PETERSBURG STATE UNIVERSITY},
-          faculty = {Mathematics \& Mechanics Faculty},
+          faculty = {},
           city = {Saint-Petersburg},
           year = {\the\year},
           type = {diploma}
@@ -152,7 +152,12 @@
     \fancyhf{}  % clear all header and footer fields
     \renewcommand{\headrulewidth}{0pt}  % remove head ruler
     %% В верхнем колонтитуле будет университет и кафедра
-    \chead{\large \my@title@university@ru \\ \my@title@faculty@ru \\ \vskip 1em{\large \my@title@chair@ru \\}}
+    \chead{\large 
+      \my@title@university@ru \\
+      \ifthenelse{\equal{\my@title@faculty@ru}{}}{}{\my@title@faculty@ru \\}  
+      \vskip 1em
+      {\large \my@title@chair@ru \\}
+    }
     %% В нижнем колонтитуле город и год
     \cfoot{\large\parbox[b]{\textwidth}{\centering \my@title@city@ru\\ \my@title@year@ru}}
 }
@@ -205,7 +210,12 @@
     \fancyhf{}  % clear all header and footer fields
     \renewcommand{\headrulewidth}{0pt}  % remove head ruler
     %% В верхнем колонтитуле будет университет и кафедра
-    \chead{\large \my@title@university@en \\ \my@title@faculty@en \\ \vskip 1em{\large \my@title@chair@en \\}}
+    \chead{\large 
+        \my@title@university@en \\ 
+        \ifthenelse{\equal{\my@title@faculty@en}{}}{}{\my@title@faculty@en \\}  
+        \vskip 1em
+        {\large \my@title@chair@en \\}
+    }
     %% В нижнем колонтитуле город и год
     \cfoot{\large\parbox[b]{\textwidth}{\centering \my@title@city@en\\ \my@title@year@en}}
 }
@@ -294,14 +304,17 @@
            {}%
            {\addcontentsline{toc}{section}{#1}}%
 }
-%\def\@@section#1{\old@section{#1}}
+\def\@@section#1{\old@section{#1}}
 
 %% Полуторный интервал
 \usepackage[nodisplayskipstretch]{setspace}
 \onehalfspacing
 
 %% Переименование "содержания" в "оглавление"
-%\gappto\captionsrussian{\renewcommand{\contentsname}{Оглавление}}
+%\gappto\captionsrussian{
+\renewcommand{\contentsname}{Оглавление}
+
+%}
 
 \let\savenumberline\numberline
 \def\numberline#1{\savenumberline{#1.}}
