@@ -1,4 +1,6 @@
-thesis.dvi
-thesis.pdf
-thesis.log
-thesis.aux
+*.dvi
+*.pdf
+*.log
+*.aux
+*.out
+*.toc
