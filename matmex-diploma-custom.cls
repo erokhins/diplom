@@ -289,12 +289,12 @@
 %% нумеруются, но в оглавление входят. А само оглавление в оглавление не входит
 \let\old@section\section
 \def\section{\@ifstar\@section\@@section}
-\def\@section#1{\newpage\old@section*{#1}%
+\def\@section#1{\old@section*{#1}%
         \ifthenelse{\equal{#1}{\contentsname}}%
            {}%
            {\addcontentsline{toc}{section}{#1}}%
 }
-\def\@@section#1{\newpage\old@section{#1}}
+%\def\@@section#1{\old@section{#1}}
 
 %% Полуторный интервал
 \usepackage[nodisplayskipstretch]{setspace}
