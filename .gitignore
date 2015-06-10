@@ -5,3 +5,6 @@
 *.out
 *.toc
 books/*
+simulation/out
+workspace.xml
+
