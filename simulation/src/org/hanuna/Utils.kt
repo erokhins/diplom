@@ -23,3 +23,6 @@ inline fun <T> tryOrReport(f: () -> T): T? {
     }
     return null
 }
+
+fun DoubleArray.asString() = map { java.lang.String.format( "%.3f", it ) }.joinToString(", ", "[", "]")
+fun List<Double>.asString() = map { java.lang.String.format( "%.3f", it ) }.joinToString(", ", "[", "]")
