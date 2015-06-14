@@ -4,7 +4,7 @@ import asString
 import tryOrReport
 
 fun main(args: Array<String>) {
-    val q1 = QLimits(0.0, 0.52, 26, 100, 5000)
+    val q1 = QLimits(0.0, 0.52, 26, 200, 5000)
 //    println(q1.runForModel(Models.MODEL1).results.joinToString())
     q1.run12()
 }
@@ -63,5 +63,5 @@ fun QLimits.runForModel(m: Model): MResult {
     return mResult
 }
 
-fun QLimits.runNForModel(m: Model, steps: Int = 1000) = steps.indices.map { runForModel(m) }.mid()
+fun QLimits.runNForModel(m: Model, steps: Int = 10) = steps.indices.map { runForModel(m) }.mid()
 
