@@ -1,4 +1,4 @@
-\documentclass[pdf, intlimits, 14pt, unicode]{beamer} %Для Latex2Pdf  tex -> pdf
+\documentclass[pdf, intlimits, 12pt, unicode]{beamer} %Для Latex2Pdf  tex -> pdf
 
 %Пакеты для русского языка
 \usepackage[T2A]{fontenc}
@@ -10,6 +10,8 @@
 %AMS TEX значки и пр.
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage{amssymb, amsmath, amsthm, amsfonts, amscd, geometry}
+
 
 %Привычный шрифт для математических формул
 \usefonttheme[onlymath]{serif}
@@ -21,19 +23,45 @@
 %Требование: черные буквы на белом фоне
 \usetheme{Warsaw}
 
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\setbeamercolor{footline}{fg=black}
+\setbeamerfont{footline}{series=\bfseries}
+
 %Более крупный шрифт для подзаголовков титульного листа
 \setbeamerfont{institute}{size={\fontsize{13}{16}}}
 \setbeamerfont{frametitle}{size={\fontsize{16}{19}}}
 
 %Задание команды (\bluetext) для выделения конкретным (синим) цветом
 %(используйте \alert для выделения цветом выбранной "темы")
-\setbeamercolor{bluetext_color}{fg=blue}
-\newcommand{\bluetext}[1]{{\usebeamercolor[fg]{bluetext_color}#1}}
+%\setbeamercolor{bluetext_color}{fg=blue}
+%\newcommand{\bluetext}[1]{{\usebeamercolor[fg]{bluetext_color}#1}}
+
+
+\newcommand{\Expect}{\mathbb E}
+\newcommand{\PRob}{\mathbb P}
+\newcommand{\leqs}{\leqslant}
+\newcommand{\geqs}{\geqslant}
+\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\I}{I}
+
+
+\newtheorem*{theoremm}{Теорема}
+\newtheorem*{lemmaa}{Лемма}
+\newtheorem*{notee}{Замечание}
+
+
+
 
 %Если используется последовательное появление пунктов списков на слайде
 %(не злоупотребляйте в слайдах для защиты дипломной работы), чтобы
 %еще непоявившиеся пункты были все-таки немножко видны.
-\setbeamercovered{transparent}
+%\setbeamercovered{transparent}
 
 \title{Рост двудольных графов с~рёберным приоритетом}
 \author{Ерохин Станислав Евгеньевич, гр. 512}
@@ -52,317 +80,123 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Содержание работы}
-    Дипломная работа состоит из трех частей:
-
+    \frametitle{BitTorrent}
+    Протокол для кооперативного обмена файлами через интернет -- BitTorrent:
     \begin{itemize}
-    %<1->, <2-> после \item означает, что пункты списка будут появляться последовательно, по нажатию клавиши
-    %При защите диплома лучше обойтись без этого, так как есть довольно большой шанс, что
-    %не будет пульта на защите и управлять показом будет другой человек.
-        \item<1-> Оценка трудоемкости случайного поиска экстремума со
-        случайной начальной точкой.
-        \item<2-> Аналитическое решение вспомогательной оптимизационной
-        задачи.
-        \item<3-> Моделирование равномерного распределения в $d$-мерном
-        шаре.
+        \item создан в 2001 году,
+        \item сейчас более 30\% трафика.
     \end{itemize}
+    \medskip
+    \medskip
+    
+    Отличительные оссобенности:
+    \begin{itemize}
+		\item файл делится на фрагменты,
+		\item клиенты обмениваются фрагментами;
+		\item изначально файл только у одного клиента.
+    \end{itemize} 
 \end{frame}
 
 \begin{frame}
-    \frametitle{Поиск: основные определения и обозначения}
-
-    \begin{itemize}
-    %\alert - это выделение в стиле выбранной "темы" (т.е. оформления) слайдов
-        \item<1-> \alert{Пространство оптимизации\,:} тор
-        $\mathbb{I}^d=(0,1]^d$ с равномерной метрикой $\rho_d$.
-        \item<2-> \alert{Целевая функция}
-        $f:\mathbb{I}^d\mapsto\mathbb{R}$
-        ограничена, измерима и
-        \begin{enumerate}
-            \item принимает максимальное значение в единственной точке
-            $x_0$,
-            \item непрерывна в точке $x_0$,
-            \item неравенство $\sup\{f(x):x\in S_r^c(x_0)\}<f(x_0)$ верно
-            для любого $r>0$.
-        \end{enumerate}
-        \item<3-> \alert{Случайный поиск\,:}
-        \begin{center} {Алгоритм}
-        \end{center}
-        \begin{description}
-            \item[Шаг~1.] $\xi_0 \gets x$; $i \gets 1$.
-            \item[Шаг~2.] $\eta \gets P(\xi_{i-1},\cdot\,)$.
-            \item[Шаг~3.] Если $f(\eta)\geq f(\xi_{i-1}),$ то $\xi_{i}
-            \gets \eta$, иначе $\xi_{i} \gets \xi_{i-1}$.
-            \item[Шаг~4.] Если $i < n$, то $\big(i \leftarrow i + 1$ и
-            перейти к шагу 2$\big)$, иначе --- STOP.
-        \end{description}
-        \item<4-> Вероятность $P(\mathbf{x},\,\cdot\,)$ обладает
-        \alert{симметричной} плотностью
-        \begin{gather*}
-            p(\mathbf{x},\mathbf{y})=g(\rho_d(\mathbf{x},\mathbf{y})),
-        \end{gather*}
-        где $g$ монотонно убывает.
-    \end{itemize}
+	\frametitle{Двудольный граф и BitTorrent}
+	\begin{figure}[t]
+		\vspace*{-0.43in}
+		\includegraphics[scale=0.4]{clients}
+		\vspace*{-0.2in}
+	\end{figure}
+	Доли: клиенты и фрагменты. 
+	Ребра: наличие фрагмента. \\
+	Клиент, у которого есть все фрагменты --- не участвует.\\ 
+	Модель кодирует, как выбираются фрагменты.\\
+	
 \end{frame}
 
 \begin{frame}
-    \frametitle{Поиск: цель и характеристики случайного поиска}
-    {\alert{Цель поиска\,:}} --- попадание в множество
-    \begin{gather*}
-        M_\varepsilon=\{x\in S_\varepsilon(x_0):f(x)>f(y)\text{ для
-        }y\in S_\varepsilon^c(x_0)\},
-    \end{gather*}
-    где $S_\varepsilon(x_0)$ --- шар радиуса $\varepsilon$ с центром в
-    $x_0$.
+	\frametitle{Двудольный граф и BitTorrent}
+	Следим за минимальной степенью фрагмента: $Q(G)$.\\
+	
+	Почему именно за ней:
+	\begin{itemize}
+		\item если $Q(G)$ достаточно большая, то мала вероятность "потерять" файл;
+		\item влияет на характер обмена фрагментами между клиентами.
+	\end{itemize}
+	Хотим познать такой момент $m$, что $Q(G_m) \geqs q$.
+\end{frame}
 
-    Характеристика качества функции --- коэффициент асимметрии:
-    \begin{gather*}
-        F^f(r)=mes_d(M_r)/mes_d(S_r(x_0)).
-    \end{gather*}
 
-    {\alert{Невырожденная}} функция: $F^f(r)\geq \theta>0$.
-
-    {\alert{Трудоемкость}} поиска: $\mathsf{E}_x\tau_\varepsilon$,
-    где $\tau_\varepsilon=\min\{i\geq0:\xi_i\in M_\varepsilon\}$.  $x$
-    --- начальная точка поиска.
-
-    {\alert{Общая проблема\,:}} оценить/уменьшить трудоемкость
-    поиска.
+\begin{frame}
+	\frametitle{обозначения}
+	$G_m$ --- граф на шагу $m$. \\
+	$n$ --- количество клиентов. \\
+	$N$ --- количество фрагментов. \\
 \end{frame}
 
 \begin{frame}
-    \frametitle{Поиск: известные результаты}
-    \alert{Результаты А.С. Тихомирова.}
-    \begin{itemize}
-        \item Имеют место неравенства
-        \begin{gather}
-            \label{eq:Tih1}
-            C|\ln\varepsilon|\leq \mathsf{E}_x\tau_\varepsilon\leq
-            I(\delta(x),\varepsilon;f,g).
-        \end{gather}
-        \item Существует $g_{opt}$, доставляющая минимум правой части
-        (\ref{eq:Tih1}).
-        \item Для невырожденных целевых функций существуют такие $g$,
-        что
-        \begin{gather*}
-            \mathsf{E}_x\tau_\varepsilon\leq C(f,d)\ln^2(\varepsilon).
-        \end{gather*}
-        \item Если $F^f\equiv\theta$, то $g_{opt}$ и
-        $I(\delta(x),\varepsilon;f,g_{opt})$ находятся явно, причем
-        $g_{opt}$ не зависит от $\theta$.
-    \end{itemize}
+	\frametitle{Модели}
+	Было рассмотрено 3 модели:
+	\begin{itemize}
+		\item Равномерный выбор рёбер.
+		\item Выбор клиента, затем выбор ребра.
+		\item Выбор клиента, ребро к редкому фрагменту.
+	\end{itemize}
+\end{frame}
 
-    \alert{Проблемы\,:}
-    \begin{itemize}
-        \item $g_{opt}$ зависит от $x$, то есть от взаимного
-        расположения начальной точки поиска и точки экстремума. А оно
-        на практике неизвестно.
-        \item Результаты, относящиеся к классам функций вида
-        $\{f:\,F^f(r)\geq \theta>0\}$.
-    \end{itemize}
+
+
+\begin{frame}
+\begin{theoremm}[Для первой модели]
+Пусть $q, \sigma \in (0, 1)$. Возьмем 
+\begin{align*}
+& m = \min(nN, \lceil pnN + 2\sqrt{pnN} \rceil), \quad \text{ где} \\
+& p \geqs q + c + \sqrt{c^2+2qc}, \quad c = \frac{\ln(2N) - \ln(\sigma)}{n}.
+\end{align*}
+Тогда в графе $G_m$ с вероятностью, большей, чем $1 - \sigma$, все фрагменты будут скачены хотя бы $qn$ клиентами:
+\begin{equation*}
+\PRob\big(Q(G_m) \geqs qn\big) > 1 - \sigma.
+\end{equation*}
+\end{theoremm}
+
+\begin{theoremm}[Для второй модели]
+Если $(q+c) < \frac{1}{4}$, то неравенство на $p$ заменяется на:
+\begin{equation*}
+p \geqs 2\left(q + c + \exp\left(-\frac{N}{18}\right) \right).
+\end{equation*}
+
+\end{theoremm}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Поиск: случайная начальная точка. Результаты}
-    \alert{Основные результаты}.
 
-    Пусть начальная точка поиска $\xi$ равномерно распределена в
-    $\mathbb{I}^d$. Тогда
-    \begin{itemize}
-        \item $ \mathsf{E}\tau_\varepsilon\leq J(\varepsilon;f,g), $
-        где $J(\varepsilon;f,g)$ явно представлено в интегральной
-        форме.
-        \item Если $F^f(r)\geq \theta>0$, то при $\varepsilon<0.25$
-        \begin{equation}
-            \label{eq:J_id}
-            J(\varepsilon;f,g)\leq J_\theta(\varepsilon;g)=
-            \frac{1}{\phi}\left(
-                d\int_{2\varepsilon}^{0.5}\frac{1}{z^{d+1}g(z)}\,\mathrm{d}z+
-                \frac{2^d-\phi}{g(0.5)}\right).
-        \end{equation}
-        \item Правая часть неравенства (\ref{eq:J_id}) достигает
-        своего минимума при
-        \begin{gather}
-            g(r)= g_{\rm opt}(r)= \left(d\ln
-                (\beta/\alpha\varepsilon)-(2\beta)^{-d}\right)^{-1}
-            \begin{cases}
-                (\alpha\varepsilon)^{-d}, &
-                \text{при $0< r\leqslant \alpha\varepsilon$,} \\
-                r^{-d}, &
-                \text{при $ a\varepsilon<r\leqslant\beta$,} \\
-                \beta^{-d}, &
-                \text{при $\beta<r\leqslant0.5$,} \\
-            \end{cases}
-            \label{eq:g:optimal:1}
-        \end{gather}
-        если $\varepsilon<a(d,\theta)$. Иначе $g_{opt}\equiv 1$.
-    \end{itemize}
-    \alert{Замечание\,.} Величина $J_\theta(\varepsilon;g_{opt})$ и
-    постоянные $a$, $\alpha$ и $\beta$ выписываются явно.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Оптимизационная задача: постановка}
-    \alert{Постановка задачи\,:}\, ставится задача минимизации
-    функционала
-    $$
-    \mathcal{J}_{u,v}(w)=\int_u^v\frac{h^2(r)}{w(r)}+\frac{c}{w(1)},
-    $$
-    (где $0<u<v\leq1$, $c>0$ и $h\in\mathbb{L}^2(u,v)$ ---
-    неотрицательная функция) в классе невозрастающих строго
-    положительных непрерывных слева плотностей $w$.
-
-    \alert{Мотивация\,:} см. формулу (\ref{eq:J_id}).
-
-    \alert{База\,:} А.С. Тихомиров для случая $v=1$.
-
-    \alert{Результаты А.С. Тихомирова} (краткая сводка):
-    \begin{itemize}
-        \item Теорема существования $w_{opt}$.
-        \item Анализ структуры $w_{opt}$.
-        \item Явный вид $w_{opt}$ в случае $v=1$, когда функция $h$
-        гладкая и строго убывает (2 параметра).
-    \end{itemize}
+\begin{lemmaa} \label{l1}
+Пусть $A$ --- множество всех графов, которые обладают некоторым монотонным свойством, а $\delta \in (0,1)$.
+Тогда, если $\PRob( H_p \in A) \geqs 1 - \eps$, то
+\begin{equation*} \label{l1_1}
+\PRob(G_{\lceil pnN(1+\delta) \rceil} \in A) > 1 - \frac{\eps}{1 - \exp\left(-\frac{\delta^2}{4}pnN\right)},
+\end{equation*}
+a если $\PRob( H_p \in A) \leqs \eps$, то
+\begin{equation*}\label{l1_2}
+\PRob(G_{\lfloor pnN(1-\delta) \rfloor} \in A) < \frac{\eps}{1 - \exp\left(-\frac{\delta^2}{2}pnN\right)}.
+\end{equation*}
+\end{lemmaa}
 
 \end{frame}
 
-\begin{frame}
-    \frametitle{Оптимизационная задача: результаты}
-    \alert{Полученные результаты} для случая произвольной $h$ и
-    $v\leq 1$:
+\begin{frame}	
+	\begin{theoremm}
+		Пусть $q \in [0, \frac{1}{5} - \frac{2}{n}]$. 
+		Возьмём $m \geqs (qn + 2) N$, тогда в графе $G_m$ с~вероятностью большей, чем 
+		$1 - n\exp\left(-\frac{N}{5}\right) +  \exp\left(- \frac{N}{20}\right)$, все фрагменты скачены как минимум $qn$ клиентами:
+		\begin{equation}
+		\PRob\Big( Q(G_m) \geqs qn \Big) > 1 - n\exp\left(-\frac{N}{5}\right) +  \exp\left(- \frac{N}{20}\right).
+		\end{equation}
+	\end{theoremm}
 
-    \begin{itemize}
-        \item Теорема существования $w_{opt}$.
-        \item Анализ структуры $w_{opt}$.
-        \item Вид $w_{opt}$ в случае, когда функция $h$ является
-        непрерывной и строго убывает (3 параметра).
-    \end{itemize}
+\begin{notee}
+Пусть $q \in [0,1]$. Тогда, если мы возьмём $m < qnN$, то в любом графе $G$, в котором ровно $m$ ребер, точно будет фрагмент, 
+со степенью меньшей $qn$, т.е. $Q(G) < qn$.
+\end{notee}
 
-    \alert{Общий вид \,:}
-
-    \begin{equation*}
-        % \label{eq:w^1}
-        w_{\rm opt}(r)=w_{b,d,\theta}(r)=
-        \frac{1}{\lambda_{b,d,\theta}}
-        \begin{cases}
-            h(b),   & \text{при $r\in(0,b]$,} \\
-            h(r),   & \text{при $r\in(b,d]$,} \\
-            h(d),   & \text{при $r\in(d,v]$,} \\
-            \theta, & \text{при $r\in(v,1]$} \\
-        \end{cases}
-    \end{equation*}
-    с $u<b\leq d\leq v$, $\theta\leq h(d)$.
-
-    \vspace{1mm} \alert{Техника:\,} А.С.Тихомиров.
 \end{frame}
 
-\begin{frame}
-    \frametitle{Моделирование: алгоритм И.В.Романовского}
-    \alert{Задача\,:}\, моделирование
-    р. р. в единичном $d$-мерном шаре\\
-
-    \alert{База\,:} алгоритм (и реализация) Л.А.Евдокимова и И.В.Романовского.\\
-    \alert{Идея\,:}
-    \begin{itemize}
-        \item Шар {\bluetext{большого}} радиуса $R$ ($R^2$ --- целое).
-        \item Покрытие шара \bluetext{единичными} кубами
-        (целочисленные вершины)
-        \begin{gather*}
-            c_d(t)=\{x|t_j\leq x_j<t_j+1,, j=1,\ldots,d\}.
-        \end{gather*}
-        \item \bluetext{Параметризация} кубов с помощью
-        векторов $t=(t_1,\ldots,t_d)$.
-        \item Моделирование номера $i$ куба.
-        \item \bluetext{Сопоставление} номера $i$ кубу $t^{(i)}$
-        (метод Уолкера --- $d$ раз).
-        \item Моделирование р. р. в кубе $t^{(i)}$ и проверка принадлежности  шару.\\
-        Если ``\alert{да}'', то деление полученного вектора на $R$.
-    \end{itemize}
-
-    \alert{Параметры} алгоритма: $d$, $R^2$.
-\end{frame}
-
-\begin{frame}
-    \frametitle{Моделирование: ограничения и затраты}
-    \alert{Ограничения\,:}\, число кубов $\leq 2^{31}-1$ (тип long).\\
-    \alert{Объем памяти\,:}\, необходимый объем памяти $\sim 8dR^3$
-    байт.
-
-    \alert{Результат:} трудоемкость отбора при разных ограничениях
-    на память.
-
-    \begin{center}
-        \begin{tabular}{|c|c|c|c|c|}
-            \hline
-            $d$& $C_{min}$ & 10 Mb & 5 Mb &1 Mb\\ \hline
-            2& $\approx$1& 1.01 & 1.01 & 1.03\\ \hline
-            3& $\approx$1&1.03&1.03&1.06\\ \hline
-            % 4&1.01&1.11&1.06&1.05\\ \hline
-            5& 1.05 & 1.07 & 1.09& 1.17 \\ \hline
-            % 6& 1.12 & 1.24&1.12&1.12\\\hline
-            7&1.25&1.25&1.25&1.33\\\hline
-            10& 2.31 & 2.31&2.31 &2.31\\ \hline
-            20& 229&229&229&229\\\hline
-        \end{tabular}
-    \end{center}
-
-    \alert{Проблема\,:}\, При ограничении на трудоемкость отбора
-    $<2$ получаем ограничение $<10$ на
-    размерность $d$.\\
-\end{frame}
-
-\begin{frame}
-    \frametitle{Моделирование: результаты}
-    \alert{Модификации\,:}\,
-    \begin{itemize}
-        \item Хранение целых в виде частного и остатка при делении на
-        $2^{32}-1$ (структура superlong).\\ Ограничение: число кубов
-        $<2^{32}(2^{32}-1)-1$.
-        \item Оптимизация хранения массивов (выигрыш $\sim 13R^3$
-        байт).
-        \item Частичное использование типа long (выигрыш $\asymp dR^3$
-        байт).
-    \end{itemize}
-
-    \alert{Результат:} трудоемкость отбора резко падает при больших
-    $d$.
-
-    \begin{center}
-        \begin{tabular}{|c||c|c||c|c||c|c|}
-            \hline
-            &  \multicolumn{2}{c||}{10 Mb}&  \multicolumn{2}{c||}{5 Mb}&  \multicolumn{2}{c|}{1 Mb}  \\\hline
-            d&$C_{long}$&$C_{slong}$&$C_{long}$&$C_{slong}$&$C_{long}$&$C_{slong}$\\ \hline
-            2& 1.01& $\approx1$ &1.01& $\approx1$&1.03 & $\approx1$  \\ \hline
-            3& 1.03& 1.02&1.03&1.02&1.06&1.04\\ \hline
-            5& 1.07&1.06&1.09&1.08&1.17&1.14\\\hline
-            7&1.25&1.13&1.25& 1.17&1.25&1.29\\\hline
-            10&2.31&1.29  &2.31&1.37&2.31&1.69\\\hline
-            % 15&115.2&2.19&2.11&2.01\\\hline
-            20&229&5.27  &229&5.27&229&7.34\\\hline
-        \end{tabular}
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Моделирование: тестирование и программа}
-    \alert{Тестирование.}\\
-    \bluetext{Статистика критерия:}\\
-    Пусть $(\xi_1,\ldots,\xi_d)$ р.р. в единичном $d$-мерном шаре
-    $B_d(1)$.  Тогда \begin{gather*}
-        \left(\frac{\xi^2_{i+1}+\ldots+\xi^2_d}{1-\xi^2_1-\ldots-\xi_i^2}\right)^{d-i}
-    \end{gather*}
-    р.р. на $(0,1)$ для любого $0\leq i<d$.\\
-    \bluetext{Критерии:} Колмогорова и $\chi^2$ с 20
-    интервалами. $N=1000$.
-
-    \alert{Программа\,:}\,
-    \begin{itemize}
-        \item Реализация алгоритма с модификациями для размерности
-        $d\leq20$.
-        \item Выбор параметров алгоритма согласно заданному
-        ограничению по памяти
-        \item Тестирование сгенерированной выборки
-    \end{itemize}
-\end{frame}
 
 \end{document}
