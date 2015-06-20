@@ -1,8 +1,4 @@
-%\documentclass[dvips, intlimits, 9pt, unicode]{beamer} %для tex -> dvi -> ps -> pdf
-\documentclass[pdf, intlimits, 9pt, unicode]{beamer} %Для Latex2Pdf  tex -> pdf
-%dvips нужно использовать _только_ если использовать построение слайдов через PostScript
-%intlimits - стиль для пределов интегралов (по желанию)
-%unicode - обязательно
+\documentclass[pdf, intlimits, 14pt, unicode]{beamer} %Для Latex2Pdf  tex -> pdf
 
 %Пакеты для русского языка
 \usepackage[T2A]{fontenc}
@@ -15,12 +11,6 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
-%разные пакеты
-%\usepackage[mathscr]{eucal}
-%\usepackage{cite}
-%\usepackage{dsfont}
-%\usepackage{indentfirst}
-
 %Привычный шрифт для математических формул
 \usefonttheme[onlymath]{serif}
 
@@ -28,13 +18,12 @@
 \usepackage{beamerthemesplit}
 
 %Общий стиль ("тема") оформления слайдов
-%Можно выбрать любую тему в \localtexmf\tex\latex\beamer\themes\theme\
-%и ее имя подставить в качестве аргумента в \usetheme
 %Требование: черные буквы на белом фоне
 \usetheme{Warsaw}
 
 %Более крупный шрифт для подзаголовков титульного листа
-\setbeamerfont{institute}{size=\normalsize}
+\setbeamerfont{institute}{size={\fontsize{13}{16}}}
+\setbeamerfont{frametitle}{size={\fontsize{16}{19}}}
 
 %Задание команды (\bluetext) для выделения конкретным (синим) цветом
 %(используйте \alert для выделения цветом выбранной "темы")
@@ -46,19 +35,14 @@
 %еще непоявившиеся пункты были все-таки немножко видны.
 \setbeamercovered{transparent}
 
-\title{Рост двудольных графов с рёберным приоритетом}
+\title{Рост двудольных графов с~рёберным приоритетом}
 \author{Ерохин Станислав Евгеньевич, гр. 512}
-\institute{Санкт-Петербургский государственный университет \\
-    Математико-механический факультет \\
-    Кафедра теории вероятностей и математической статистики \\
-    \vspace{0.7cm}
-    Научный руководитель:  к.ф.-м.н., Якубович Ю.\,В. \\
+\institute{
+	\vspace{0.30cm}\\
+    Научный руководитель: к.ф.-м.н., д. Якубович~Ю.~В. \\
     Рецензент: к.ф.-м.н., д. Валландер С.\,С. \\
-    \vspace{0.7cm}
 }
 \date{
-    Санкт-Петербург\\
-    2015г.
 }
 
 \begin{document}
