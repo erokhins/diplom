@@ -4,6 +4,8 @@
 *.aux
 *.out
 *.toc
+*.nav
+*.snm
 books/*
 simulation/out
 workspace.xml
